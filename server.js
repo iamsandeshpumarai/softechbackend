@@ -12,7 +12,7 @@ dotenv.config();
 
 // Apply CORS middleware before routes
 app.use(cors({
-  origin: ["http://localhost:5173", "https://your-app.vercel.app"], // Include Vercel URL for future deployment
+  origin: ["http://localhost:5173", "https://softechfoundation.vercel.app"], // Include Vercel URL for future deployment
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
