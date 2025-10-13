@@ -50,17 +50,6 @@ function AdminChecker(req, res) {
 }
 
 
-function AdminLogout(req, res) {
- 
-    try{
-
-        res.clearCookie('tokens', { httpOnly: true, sameSite: 'lax' })
-        res.status(200).json({ message: "Logged Out Successfully" })
-    }
-    catch(err){
-res.status(500).json({message:"Internal Server Error"})
-    }
-}
 
 
 async function Userdetails(req,res){
