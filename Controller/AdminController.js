@@ -35,11 +35,9 @@ async function AdminPanel(req, res) {
 function AdminChecker(req, res) {
   try {
 
-    const decoded = jwt.verify(token, "ihateyou");
+ 
     return res.status(200).json({
-      message: "Logged In",
-      adminId: decoded.id,
-      token,
+      message: "Logged In"
     });
   } catch (err) {
     console.error("Token verification failed:", err.message);
