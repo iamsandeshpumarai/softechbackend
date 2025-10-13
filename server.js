@@ -1,30 +1,37 @@
-const express = require('express')
-const app = express()
-const port = 8000
-const dotenv = require('dotenv')
-const cors = require('cors')
-const Router = require('./UserRoute/userRoute.js')
-const AdminRouter = require('./UserRoute/adminRoute.js')
-const cookieparser = require('cookie-parser')
-const { default: mongoose } = require('mongoose')
+const express = require('express');
+const app = express();
+const port = 8000;
+const dotenv = require('dotenv');
+const cors = require('cors');
+const Router = require('./UserRoute/userRoute.js');
+const AdminRouter = require('./UserRoute/adminRoute.js');
+const cookieParser = require('cookie-parser');
+const { default: mongoose } = require('mongoose');
+
+dotenv.config();
+
 app.use(cors({
-  origin: "http://localhost:5173", // ✅ your frontend URL
-  credentials: true,               // ✅ allow cookies & auth headers
+  origin: "http://localhost:5173", // Frontend URL
+  credentials: true,               // Allow cookies and auth headers
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
+  allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
 }));
-app.use(cookieparser())
-app.use(express.json())
-dotenv.config()
-mongoose.connect(process.env.MONGO_URI).then(()=>{console.log('data connected')}).catch((err)=>{console.log(err)})
 
+app.use(cookieParser());
+app.use(express.json());
 
-app.use('/',Router)
-app.use('/admin',AdminRouter)
-app.get('/data',(req,res)=>{
-    console.log("server working ")
-res.send('data have been got')
-})
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Database connected'))
+  .catch((err) => console.log('Database connection error:', err));
 
+app.use('/', Router);
+app.use('/admin', AdminRouter);
 
-app.listen(port,()=>{
-    console.log('app is running in the port',port)
-})
+app.get('/data', (req, res) => {
+  console.log("Server working");
+  res.send('Data has been received');
+});
+
+app.listen(port, () => {
+  console.log(`App is running on port ${port}`);
+});
