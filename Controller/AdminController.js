@@ -60,4 +60,4 @@ res.status(500).json({message:"Internal Server Error"})
     }
 }
 
-module.exports = { AdminPanel, AdminChecker, AdminLogout ,Userdetails}
+module.exports = { AdminPanel, AdminChecker ,Userdetails}
