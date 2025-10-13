@@ -10,20 +10,18 @@ const { default: mongoose } = require('mongoose');
 
 dotenv.config();
 
+// Apply CORS middleware before routes
 app.use(cors({
-  origin: "http://localhost:5173", // Frontend URL
-  credentials: true,               // Allow cookies and auth headers
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow methods
-  allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
+  origin: ["http://localhost:5173", "https://your-app.vercel.app"], // Include Vercel URL for future deployment
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
 app.use(cookieParser());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('Database connected'))
-  .catch((err) => console.log('Database connection error:', err));
-
+// Define routes after middleware
 app.use('/', Router);
 app.use('/admin', AdminRouter);
 
@@ -31,6 +29,10 @@ app.get('/data', (req, res) => {
   console.log("Server working");
   res.send('Data has been received');
 });
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Database connected'))
+  .catch((err) => console.log('Database connection error:', err));
 
 app.listen(port, () => {
   console.log(`App is running on port ${port}`);
