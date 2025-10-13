@@ -21,7 +21,7 @@ async function AdminPanel(req, res) {
             maxAge: 60 * 60 * 1000,
             httpOnly: true,
             sameSite: "lax",
-            secure: false 
+            secure: false
         })
 
         res.status(200).json({ message: "Successfully LoggedIn" })
@@ -72,7 +72,7 @@ res.status(200).json({userdata:UserDetails})
 
     }
     catch(err){
-
+res.status(500).json({message:"Internal Server Error"})
     }
 }
 
