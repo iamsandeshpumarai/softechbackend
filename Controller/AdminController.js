@@ -34,8 +34,6 @@ async function AdminPanel(req, res) {
 
 function AdminChecker(req, res) {
   try {
-    const token = req.cookies.tokens;
-    if (!token) return res.status(401).json({ message: "No Token Found" });
 
     const decoded = jwt.verify(token, "ihateyou");
     return res.status(200).json({
