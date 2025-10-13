@@ -5,31 +5,30 @@ const userModel = require('../Model/DatabaseModel')
 
 // Login
 async function AdminPanel(req, res) {
-    const { username, password } = req.body
-    console.log(req.body)
-    try {
-        const admin = await AdminModel.findOne({ username })
-        if (!admin) return res.status(400).json({ message: "Admin Email is Incorrect" })
+  const { username, password } = req.body;
+  console.log(req.body);
+  try {
+    const admin = await AdminModel.findOne({ username });
+    if (!admin) return res.status(400).json({ message: "Admin Email is Incorrect" });
 
-        const isMatch = await bcrypt.compare(password, admin.password)
-        if (!isMatch) return res.status(400).json({ message: "Password is Invalid" })
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) return res.status(400).json({ message: "Password is Invalid" });
 
-        const tokens = jwt.sign({ id: admin._id }, "ihateyou", { expiresIn: '1h' })
+    const tokens = jwt.sign({ id: admin._id }, "ihateyou", { expiresIn: '1h' });
 
-        
-        res.cookie("tokens", tokens, {
-            maxAge: 60 * 60 * 1000,
-            httpOnly: true,
-            sameSite: "lax",
-            secure: false
-        })
+    res.cookie("tokens", tokens, {
+      maxAge: 60 * 60 * 1000, // 1 hour
+      httpOnly: true,         // Prevent client-side access to cookie
+      sameSite: "none",       // Required for cross-origin requests
+      secure: true,           // Required for HTTPS
+    });
 
-        res.status(200).json({ message: "Successfully LoggedIn" })
-        console.log('i got the data')
-    } catch (err) {
-        console.log(err)
-        res.status(500).json({ message: "Internal Server Error" })
-    }
+    res.status(200).json({ message: "Successfully Logged In" });
+    console.log('Token set in cookie');
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
 
 
