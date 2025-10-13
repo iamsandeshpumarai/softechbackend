@@ -1,27 +1,19 @@
 const jwt = require('jsonwebtoken');
 
-const adminMiddleware = (req, res, next) => {
-  console.log(req.cookies.tokens,'is the cookies')
+function adminMiddleware(req, res, next) {
+  const token = req.cookies.tokens;
+  if (!token) {
+    return res.status(401).json({ message: "No Token Found" });
+  }
+
   try {
-    let token;
-
-    // Check Authorization header
-    
-    
-    if (req.cookies && req.cookies.tokens) {
-      token = req.cookies.tokens;
-    }
-
-    if (!token) return res.status(401).json({ message: "No token provided" });
-
-    // Verify token
     const decoded = jwt.verify(token, "ihateyou");
-    req.id = decoded.id; 
+    req.adminId = decoded.id; // Attach admin ID to request
     next();
   } catch (err) {
-    console.error(err);
-    res.status(401).json({ message: "Invalid or expired token" });
+    console.error("Middleware error:", err.message);
+    return res.status(401).json({ message: "Invalid Token" });
   }
-};
+}
 
 module.exports = adminMiddleware;
