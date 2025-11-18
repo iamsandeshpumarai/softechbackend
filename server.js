@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('Database connected'))
   .catch((err) => console.log('Database connection error:', err));
 app.use(cors({
-  origin: ["http://localhost:5173", "https://softech-chi.vercel.app/"], // Include Vercel URL for future deployment
+  origin: ["http://localhost:5173", "https://softech-chi.vercel.app"], // Include Vercel URL for future deployment
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
